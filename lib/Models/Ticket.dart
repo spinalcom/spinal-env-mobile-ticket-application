@@ -1,0 +1,3 @@
+class Tickets {
+  String name;
+}
