@@ -1,5 +1,5 @@
 
-const String kBaseUrl = "http://10.1.23.20";
+const String kBaseUrl = "http://192.168.1.36";
 
 const String kUserPort = ":3333";
 const String kUserUrl = kBaseUrl + kUserPort;
