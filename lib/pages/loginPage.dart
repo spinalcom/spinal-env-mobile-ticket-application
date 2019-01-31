@@ -1,8 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:ticketing/color.dart';
 import 'package:ticketing/userManager.dart';
-
 import 'package:ticketing/widgets/accentColorOverride.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,20 +25,17 @@ class _LoginPageState extends State<LoginPage> {
       _password = Text(_passwordInputController.text).data;
     });
 
-   login(_email, _password).then((user){
-
-     if (user != null){
-       if (_stayConnected){
-         saveUserProfile(user);
-       }
-       Navigator.pop(context);
-     }
-     setState(() {
-       _found = false;
-     });
-   });
-
-
+    login(_email, _password).then((user) {
+      if (user != null) {
+        if (_stayConnected) {
+          saveUserProfile(user);
+        }
+        Navigator.pop(context);
+      }
+      setState(() {
+        _found = false;
+      });
+    });
   }
 
   _onSingUp() {
@@ -56,12 +51,13 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
-  _displayErrorUserNotFound(){
+  _displayErrorUserNotFound() {
     if (!_found)
-    return Text('User not found');
+      return Text('User not found');
     else
       return Text('');
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -141,4 +137,3 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
-

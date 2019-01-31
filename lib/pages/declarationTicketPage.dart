@@ -9,13 +9,19 @@ class TicketDeclarationPage extends StatefulWidget {
   final DefaultSentence sentences;
   final Category category;
 
-  TicketDeclarationPage(
-      {this.nodeId, this.sentences, this.category, });
+  TicketDeclarationPage({
+    this.nodeId,
+    this.sentences,
+    this.category,
+  });
 
   @override
   State<StatefulWidget> createState() {
     return _TicketDeclarationPageState(
-        fetchNode(this.nodeId), this.sentences, this.category,);
+      fetchNode(this.nodeId),
+      this.sentences,
+      this.category,
+    );
   }
 }
 
@@ -23,12 +29,15 @@ class _TicketDeclarationPageState extends State<TicketDeclarationPage> {
   final Future<Node> node;
   final DefaultSentence _sentence;
   final Category _category;
-
+  var nodeInfo;
   String _message;
   final _messageController = TextEditingController();
 
   _TicketDeclarationPageState(
-      this.node, this._sentence, this._category, );
+    this.node,
+    this._sentence,
+    this._category,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +55,6 @@ class _TicketDeclarationPageState extends State<TicketDeclarationPage> {
       ),
       body: ListView(
         children: <Widget>[
-
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
@@ -86,11 +94,18 @@ class _TicketDeclarationPageState extends State<TicketDeclarationPage> {
     );
   }
 
+  _setNodeInfo(data) {
+    setState(() {
+      nodeInfo = data;
+    });
+  }
+
   _onSend() {
     setState(() {
       _message = _messageController.text;
     });
-    sendTicket(_sentence, _message,  node, _category);
+    sendTicket(_sentence, _message, _category, node);
+    Navigator.pushNamed(context, '/home');
   }
 }
 

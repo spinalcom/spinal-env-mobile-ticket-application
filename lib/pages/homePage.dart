@@ -5,26 +5,12 @@ import 'package:ticketing/ticketManager.dart';
 import 'package:ticketing/widgets/bottomNavBar.dart';
 
 class HomePage extends StatefulWidget {
-  final String name;
-  final String firstname;
-  final String email;
-  final String password;
-  final String id;
-
-  HomePage({this.name, this.firstname, this.password, this.email, this.id})
-      : super();
-
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedId = 0;
-
-  String _qrNodeId = "";
-  String _sentence = "";
   String categoryId = "";
-
   String name = "";
   String firstname = "";
   String email = "";
@@ -40,10 +26,19 @@ class _HomePageState extends State<HomePage> {
           title: Center(child: Text('SpinalTicketing')),
         ),
         body: Center(
-          child: Image(
-            image: ExactAssetImage('images/qrcode.png'),
-            width: 200,
-            height: 200,
+          child: Column(
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.all(32),
+                child: Text(
+                  "CECOBRON",
+                  textScaleFactor: 2,
+                ),
+              ),
+              Image(
+                image: ExactAssetImage('images/building.png'),
+              ),
+            ],
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

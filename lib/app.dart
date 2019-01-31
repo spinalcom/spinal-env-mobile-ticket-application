@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:ticketing/color.dart';
-import 'package:ticketing/pages/categoryChoose.dart';
-import 'package:ticketing/pages/profilePage.dart';
-import 'package:ticketing/pages/ticketHistory.dart';
 import 'package:ticketing/pages/homePage.dart';
 import 'package:ticketing/pages/loginPage.dart';
+import 'package:ticketing/pages/profilePage.dart';
 import 'package:ticketing/pages/signUpPage.dart';
-import 'package:ticketing/ticketManager.dart';
+import 'package:ticketing/pages/ticketHistory.dart';
 import 'package:ticketing/userManager.dart';
 
 final ThemeData _kSpinalcomTheme = _buildSpinalcomTheme();
@@ -47,7 +44,6 @@ ThemeData _buildSpinalcomTheme() {
     textTheme: _buildSpinalcomTextTheme(base.textTheme),
     primaryTextTheme: _buildSpinalcomTextTheme(base.primaryTextTheme),
     accentTextTheme: _buildSpinalcomTextTheme(base.accentTextTheme),
-
     inputDecorationTheme: InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
@@ -61,13 +57,13 @@ class SpinalTicketingApp extends StatelessWidget {
       title: 'SpinalTicketig',
       theme: _kSpinalcomTheme,
       home: HomePage(),
+      initialRoute: '/login',
       onGenerateRoute: _getRoute,
     );
   }
 }
 
 Route<dynamic> _getRoute(RouteSettings settings) {
-
   switch (settings.name) {
     case '/login':
       return _getMaterialPageRoute(settings, LoginPage());
@@ -77,6 +73,8 @@ Route<dynamic> _getRoute(RouteSettings settings) {
       return _getMaterialPageRoute(settings, ProfilePage(getUserProfile()));
     case '/history':
       return _getMaterialPageRoute(settings, TicketHistory());
+    case '/home':
+      return _getMaterialPageRoute(settings, HomePage());
   }
   return null;
 }

@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ticketing/pages/SenetenceSelectorPage.dart';
-import 'package:ticketing/widgets/categoryItem.dart';
 import 'package:ticketing/Models/Category.dart';
+import 'package:ticketing/pages/SenetenceSelectorPage.dart';
 import 'package:ticketing/ticketManager.dart';
+import 'package:ticketing/widgets/categoryItem.dart';
 
 class CategoryChose extends StatelessWidget {
   final Future<List<Category>> categories;
   final String nodeId;
-  const CategoryChose({Key key, this.categories, this.nodeId}) : super(key: key);
+  const CategoryChose({Key key, this.categories, this.nodeId})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,10 +21,7 @@ class CategoryChose extends StatelessWidget {
         child: FutureBuilder<List<Category>>(
           future: categories,
           builder: (context, snapshot) {
-            print('loris');
             if (snapshot.hasData) {
-
-              print(snapshot.data);
               if (snapshot.data.length > 0)
                 return GridView(
                   children: snapshot.data
@@ -57,7 +55,6 @@ class CategoryChose extends StatelessWidget {
   }
 
   getIcon(iconName) {
-    print(iconName);
     switch (iconName) {
       case 'streetview':
         return Icons.streetview;

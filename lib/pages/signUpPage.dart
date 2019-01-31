@@ -36,7 +36,10 @@ class SignUpPageState extends State<SignUpPage> {
       passwordConfirmationInputController =
           Text(_passwordConfirmationInputController.text).data;
     });
-    signUp( nameInputController,  firstNameInputController,  emailInputController,  passwordInputController);
+    signUp( nameInputController,  firstNameInputController,  emailInputController,  passwordInputController)
+    .then((onValue){
+      Navigator.pushNamed(context, '/home');
+    });
   }
 
   @override
