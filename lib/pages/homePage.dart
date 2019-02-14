@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
 import 'package:ticketing/pages/categoryChoose.dart';
 import 'package:ticketing/ticketManager.dart';
+import 'package:ticketing/widgets/TopBar.dart';
 import 'package:ticketing/widgets/bottomNavBar.dart';
 
 class HomePage extends StatefulWidget {
@@ -22,9 +23,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Center(child: Text('SpinalTicketing')),
-        ),
+        appBar: topBar(title: 'Tell My Feeling'),
         body: Center(
           child: Column(
             children: <Widget>[
@@ -38,17 +37,25 @@ class _HomePageState extends State<HomePage> {
               Image(
                 image: ExactAssetImage('images/building.png'),
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  vertical: 32.0,
+                  horizontal: 16.0,
+                ),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: RaisedButton(
+                    onPressed: _scan,
+                    child: Text('Scan'),
+                  ),
+                ),
+              )
             ],
           ),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-            onPressed: _scan,
-            tooltip: 'Declacerer un ticket',
-            child: Icon(
-              Icons.photo_camera,
-            )),
-        bottomNavigationBar: BottomNavBar());
+        bottomNavigationBar: BottomNavBar(
+          selectedIndex: 3,
+        ));
   }
 
   _scan() {
@@ -64,10 +71,11 @@ class _HomePageState extends State<HomePage> {
 
   _onQrScan(id) {
     Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              CategoryChose(categories: fetchCategories(), nodeId: id)),
-    );
+        context,
+        MaterialPageRoute(
+            builder: (context) => CategoryPage(
+                  node: fetchNode(id),
+                  processes: fetchProcesses(),
+                )));
   }
 }

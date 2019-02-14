@@ -1,6 +1,10 @@
-class DefaultSentence {
+class Categories {
   final String name;
-  final children;
+  List<Categories> children;
 
-  DefaultSentence({this.name, this.children});
+  Categories({this.name, children});
+
+  factory Categories.fromJson(js) {
+    return Categories(name: js['name']);
+  }
 }

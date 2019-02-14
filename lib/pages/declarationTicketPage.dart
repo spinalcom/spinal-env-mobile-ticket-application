@@ -1,128 +1,237 @@
 import 'package:flutter/material.dart';
-import 'package:ticketing/Models/Category.dart';
-import 'package:ticketing/Models/DefaultSentence.dart';
-import 'package:ticketing/Models/Node.dart';
 import 'package:ticketing/ticketManager.dart';
+import 'package:ticketing/widgets/TopBar.dart';
+import 'package:ticketing/widgets/bottomNavBar.dart';
 
-class TicketDeclarationPage extends StatefulWidget {
-  final String nodeId;
-  final DefaultSentence sentences;
-  final Category category;
-
-  TicketDeclarationPage({
-    this.nodeId,
-    this.sentences,
-    this.category,
-  });
+class TicketDeclaration extends StatefulWidget {
+  final String roomName;
+  final String problemName;
+  final String processId;
+  final String roomId;
+  const TicketDeclaration(
+      {Key key, this.roomName, this.problemName, this.processId, this.roomId})
+      : super(key: key);
 
   @override
   State<StatefulWidget> createState() {
-    return _TicketDeclarationPageState(
-      fetchNode(this.nodeId),
-      this.sentences,
-      this.category,
-    );
+    return TicketDeclarationState(roomName, problemName, processId, roomId);
   }
 }
 
-class _TicketDeclarationPageState extends State<TicketDeclarationPage> {
-  final Future<Node> node;
-  final DefaultSentence _sentence;
-  final Category _category;
-  var nodeInfo;
-  String _message;
-  final _messageController = TextEditingController();
+class TicketDeclarationState extends State<TicketDeclaration> {
+  final String roomName;
+  final String problemName;
+  final String processId;
+  final String roomId;
 
-  _TicketDeclarationPageState(
-    this.node,
-    this._sentence,
-    this._category,
-  );
+  String note;
+  String problem;
+
+  final noteController = TextEditingController();
+  final problemController = TextEditingController();
+
+  TicketDeclarationState(
+      this.roomName, this.problemName, this.processId, this.roomId);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: FutureBuilder<Node>(
-          future: node,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return Text(snapshot.data.name);
-            }
-            return CircularProgressIndicator();
-          },
+      appBar: topBar(
+        title: 'Déclaration',
+        subTitle: roomName,
+      ),
+      body: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16.0),
+        child: ListView(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: problemController,
+                maxLines: 3,
+                decoration: InputDecoration(
+                    labelText: 'Quel est votre problème ?',
+                    hintText: problemName,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TakePhoto(),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: noteController,
+                maxLines: 10,
+                decoration: InputDecoration(
+                    labelText: 'Commentaire',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(4)),
+                    )),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: RaisedButton(
+                  onPressed: _onSend,
+                  color: Color.fromRGBO(16, 22, 88, 1.0),
+                  child: Text(
+                    "Valider",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ),
+            )
+          ],
         ),
       ),
-      body: ListView(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                Text('Type de ticket'),
-                Text(_category.name),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: <Widget>[
-                Text("Type de probleme"),
-                Text(_sentence.name),
-              ],
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextFormField(
-              maxLines: 10,
-              decoration: InputDecoration(
-                labelText: 'Note',
-              ),
-              keyboardType: TextInputType.text,
-              controller: _messageController,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child:
-                RaisedButton(onPressed: this._onSend, child: Text("Envoyer")),
-          )
-        ],
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: 2,
       ),
     );
   }
 
-  _setNodeInfo(data) {
-    setState(() {
-      nodeInfo = data;
-    });
-  }
-
   _onSend() {
     setState(() {
-      _message = _messageController.text;
+      if (noteController.text.isNotEmpty) note = noteController.text;
+      if (problemController.text.isNotEmpty)
+        problem = problemController.text;
+      else
+        problem = problemName;
     });
-    sendTicket(_sentence, _message, _category, node);
-    Navigator.pushNamed(context, '/home');
+    sendTicket(
+        problemName: problem, note: note, processId: processId, id: roomId);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+      return ConfirmationPage();
+    }));
   }
 }
 
-class TicketDeclarationChoose extends StatelessWidget {
-  final List<Widget> _ticketTypes;
-
-  TicketDeclarationChoose(this._ticketTypes);
-
+class ConfirmationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(32),
-      padding: EdgeInsets.all(12),
-      alignment: Alignment.center,
-      child: ListView(
-        children: _ticketTypes,
+    double width = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      appBar: topBar(),
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: Stack(
+              children: <Widget>[
+                Image(
+                  image: ExactAssetImage('images/qr.png', scale: 0.5),
+                ),
+                Image(
+                  image: ExactAssetImage('images/check.png', scale: 0.3),
+                )
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 0.0,
+            child: Container(
+              width: width,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    "Nous avons bien pris en compte votre déclaration.\n"
+                        "Vous receverez une notification dès que le problème sera résolu!",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Color.fromRGBO(16, 22, 88, 1.0),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
       ),
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: 2,
+      ),
+    );
+  }
+}
+
+class TakePhoto extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text('Avez-vous des photos ?'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 64,
+                width: 64,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color.fromRGBO(16, 22, 88, 1.0),
+                  ),
+                ),
+                child: Icon(
+                  Icons.camera_enhance,
+                  size: 40,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 64,
+                width: 64,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color.fromRGBO(16, 22, 88, 1.0),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 64,
+                width: 64,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color.fromRGBO(16, 22, 88, 1.0),
+                  ),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                height: 64,
+                width: 64,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: Color.fromRGBO(16, 22, 88, 1.0),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
     );
   }
 }

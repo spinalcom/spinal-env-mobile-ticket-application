@@ -1,7 +1,5 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:ticketing/config.dart';
+import 'package:ticketing/colors.dart';
 import 'package:ticketing/userManager.dart';
 import 'package:ticketing/widgets/accentColorOverride.dart';
 
@@ -36,8 +34,9 @@ class SignUpPageState extends State<SignUpPage> {
       passwordConfirmationInputController =
           Text(_passwordConfirmationInputController.text).data;
     });
-    signUp( nameInputController,  firstNameInputController,  emailInputController,  passwordInputController)
-    .then((onValue){
+    signUp(nameInputController, firstNameInputController, emailInputController,
+            passwordInputController)
+        .then((onValue) {
       Navigator.pushNamed(context, '/home');
     });
   }
@@ -45,22 +44,12 @@ class SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: kSpinalcomSurfaceWhite,
       body: Container(
         padding: const EdgeInsets.all(40.0),
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [const Color(0xff2d3d93), const Color(0xff365bab)]),
-            image: DecorationImage(
-              image: ExactAssetImage('images/logo.png'),
-            )),
         child: Form(
           key: _formKey,
-          autovalidate: true,
-          child: ListView(
-              children: <Widget>[
+          child: ListView(children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: AccentColorOverride(
@@ -130,25 +119,8 @@ class SignUpPageState extends State<SignUpPage> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: AccentColorOverride(
-                child: TextFormField(
-                  validator: (value) {
-                    if (value.isEmpty) {
-                      return 'This field is required';
-                    }
-                  },
-                  decoration: InputDecoration(
-                    labelText: 'Confirmation mot de passe',
-                  ),
-                  obscureText: true,
-                  keyboardType: TextInputType.text,
-                  controller: _passwordConfirmationInputController,
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RaisedButton(onPressed: _onSignUp, child: Text("Inscription")),
+              child: RaisedButton(
+                  onPressed: _onSignUp, child: Text("Inscription")),
             ),
           ]),
         ),

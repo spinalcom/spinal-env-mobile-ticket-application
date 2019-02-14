@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ticketing/color.dart';
+import 'package:ticketing/colors.dart';
+import 'package:ticketing/pages/homePage.dart';
 import 'package:ticketing/userManager.dart';
 import 'package:ticketing/widgets/accentColorOverride.dart';
 
@@ -30,7 +31,9 @@ class _LoginPageState extends State<LoginPage> {
         if (_stayConnected) {
           saveUserProfile(user);
         }
-        Navigator.pop(context);
+        Navigator.pushReplacement(context, MaterialPageRoute(builder: (build) {
+          return HomePage();
+        }));
       }
       setState(() {
         _found = false;
@@ -61,20 +64,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Container(
-        padding: const EdgeInsets.all(40.0),
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [const Color(0xff2d3d93), const Color(0xff365bab)]),
-            image: DecorationImage(
-              image: ExactAssetImage('images/logo.png'),
-            )),
-        child: Form(
-          autovalidate: true,
-          child: Column(
+      backgroundColor: kSpinalcomSurfaceWhite,
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Tell My Feeling',
+              style: TextStyle(fontSize: 32),
+            ),
+          ),
+          Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.center,
@@ -112,7 +115,7 @@ class _LoginPageState extends State<LoginPage> {
                       Checkbox(
                         onChanged: _onChange,
                         value: _stayConnected,
-                        activeColor: kSpinalcomOrange,
+                        activeColor: kSpinalcomAccent,
                       ),
                     ],
                   ),
@@ -129,10 +132,10 @@ class _LoginPageState extends State<LoginPage> {
                 FlatButton(
                   onPressed: _onSingUp,
                   child: Text("Inscription"),
-                  textColor: kSpinalcomOrange,
+                  textColor: kSpinalcomAccent,
                 ),
               ]),
-        ),
+        ],
       ),
     );
   }

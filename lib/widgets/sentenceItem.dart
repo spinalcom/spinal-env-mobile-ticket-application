@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ticketing/colors.dart';
 
 class SentenceItem extends StatefulWidget {
   final String _sentence;
@@ -27,50 +28,28 @@ class SentenceItemState extends State<SentenceItem> {
       children: <Widget>[
         Row(
           children: <Widget>[
-            getOpenIcon(),
             Expanded(
-              child: ListTile(
-                title: Text(_sentence),
-                onTap: () {
-                  _onTap(_sentence);
-                },
+              child: Container(
+                decoration: BoxDecoration(
+                  color: kSpinalcomAccent,
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(4),
+                  ),
+                ),
+                child: ListTile(
+                  title: Text(
+                    _sentence,
+                    style: TextStyle(color: kSpinalcomSurfaceWhite),
+                  ),
+                  onTap: () {
+                    _onTap(_sentence);
+                  },
+                ),
               ),
             )
           ],
         ),
-        getChildren()
       ],
     );
-  }
-
-  getOpenIcon() {
-    if (children != null && children.length > 0) {
-      return IconButton(
-        icon: opened
-            ? Icon(Icons.keyboard_arrow_down)
-            : Icon(Icons.keyboard_arrow_right),
-        tooltip: 'open',
-        onPressed: () {
-          setState(() {
-            opened = !opened;
-          });
-        },
-      );
-    }
-    return Text('');
-  }
-
-  getChildren() {
-    if (this.children != null && this.opened) {
-      return Padding(
-        padding: const EdgeInsets.fromLTRB(18.0, 0, 0, 0),
-        child: Column(
-            children: children
-                .map((child) =>
-                SentenceItem(child['name'], _onTap, child['children']))
-                .toList()),
-      );
-    }
-    return Text('');
   }
 }

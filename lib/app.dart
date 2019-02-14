@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ticketing/color.dart';
+import 'package:ticketing/colors.dart';
 import 'package:ticketing/pages/homePage.dart';
 import 'package:ticketing/pages/loginPage.dart';
 import 'package:ticketing/pages/profilePage.dart';
@@ -23,15 +23,15 @@ TextTheme _buildSpinalcomTextTheme(TextTheme base) {
       )
       .apply(
         fontFamily: 'Assassin',
-        displayColor: kSpinalcomOrange,
-        bodyColor: kSpinalcomOrange,
+        displayColor: kSpinalcomAccent,
+        bodyColor: kSpinalcomAccent,
       );
 }
 
 ThemeData _buildSpinalcomTheme() {
   final ThemeData base = ThemeData.light();
   return base.copyWith(
-    accentColor: kSpinalcomOrange,
+    accentColor: kSpinalcomAccent,
     primaryColor: kSpinalcomBlue100,
     buttonTheme: base.buttonTheme.copyWith(
       buttonColor: kSpinalcomBlue100,
@@ -56,8 +56,7 @@ class SpinalTicketingApp extends StatelessWidget {
     return MaterialApp(
       title: 'SpinalTicketig',
       theme: _kSpinalcomTheme,
-      home: HomePage(),
-      initialRoute: '/login',
+      home: LoginPage(),
       onGenerateRoute: _getRoute,
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ticketing/Models/User.dart';
+import 'package:ticketing/widgets/TopBar.dart';
 import 'package:ticketing/widgets/bottomNavBar.dart';
 
 class ProfilePage extends StatelessWidget {
@@ -10,10 +11,11 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: topBar(title: 'Profile'),
       body: FutureBuilder(
         future: userProfile,
-        builder: (context, snapshot){
-          if (snapshot.hasData){
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
             return Column(
               children: <Widget>[
                 Icon(
@@ -27,8 +29,9 @@ class ProfilePage extends StatelessWidget {
           }
         },
       ),
-        bottomNavigationBar: BottomNavBar()
+      bottomNavigationBar: BottomNavBar(
+        selectedIndex: 0,
+      ),
     );
   }
 }
-

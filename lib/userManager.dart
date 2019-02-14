@@ -1,23 +1,23 @@
 import 'dart:convert';
 
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ticketing/Models/User.dart';
 import 'package:ticketing/config.dart';
-import 'package:http/http.dart' as http;
-
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<UserProfile> login(String email, String password) {
   var url = kLoginUrl;
   return http.post(url, body: {"email": email, "password": password}).then(
       (response) async {
     var js = json.decode(response.body);
-    if (js['id'] != null) {
 
-      return UserProfile.fromJson(js);
+    if (js['id'] != null) {
+      UserProfile user = UserProfile.fromJson(js);
+      saveUserProfile(user);
+      return user;
     }
     return null;
   });
-
 }
 
 Future<bool> saveUserProfile(UserProfile user) async {
@@ -53,7 +53,8 @@ Future<UserProfile> getUserProfile() async {
       id: id);
 }
 
-Future<UserProfile> signUp(String name, String firstname, String email, String password) {
+Future<UserProfile> signUp(
+    String name, String firstname, String email, String password) {
   final String url = kSignUpUrl;
   return http.post(url, body: {
     "name": name,
@@ -63,14 +64,12 @@ Future<UserProfile> signUp(String name, String firstname, String email, String p
   }).then((response) {
     var js = json.decode(response.body);
     if (js['bad'] == null) {
-      saveUserProfile(UserProfile.fromJson(js)).then((res){
-        if (res){
+      saveUserProfile(UserProfile.fromJson(js)).then((res) {
+        if (res) {
           return getUserProfile();
         }
       });
     }
     return null;
   });
-
-
 }
