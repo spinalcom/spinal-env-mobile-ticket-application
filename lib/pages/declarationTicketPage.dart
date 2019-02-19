@@ -31,7 +31,34 @@ class TicketDeclarationState extends State<TicketDeclaration> {
   final problemController = TextEditingController();
 
   TicketDeclarationState(
-      this.roomName, this.problemName, this.processId, this.roomId);
+      this.roomName, this.problemName, this.processId, this.roomId) {}
+
+  @override
+  void dispose() {
+    noteController.dispose();
+    problemController.dispose();
+    super.dispose();
+  }
+
+  getTextField() {
+    if (this.problemName.contains('Autre'))
+      return TextField(
+        controller: problemController,
+        maxLines: 3,
+        decoration: InputDecoration(
+            labelText: 'Quel est votre problème ?',
+            hintText: problemName,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(4)),
+            )),
+      );
+    return Text(
+      problemName,
+      style: TextStyle(
+        fontSize: 32,
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,16 +73,7 @@ class TicketDeclarationState extends State<TicketDeclaration> {
           children: <Widget>[
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: TextField(
-                controller: problemController,
-                maxLines: 3,
-                decoration: InputDecoration(
-                    labelText: 'Quel est votre problème ?',
-                    hintText: problemName,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(4)),
-                    )),
-              ),
+              child: getTextField(),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
