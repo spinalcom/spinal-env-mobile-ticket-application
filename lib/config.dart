@@ -6,7 +6,7 @@ const String kUserPort = ":3333";
 const String kUserUrl = kUserBaseUrl;
 
 const String kLoginUrl = kUserUrl + "/login";
-const String kSignUpUrl = kUserUrl;
+const String kSignUpUrl = kUserUrl + '/user';
 
 const String kTicketPort = ":3000";
 const String kTicketUrl = kTicketBaseUrl;
