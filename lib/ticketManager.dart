@@ -29,7 +29,8 @@ sendTicket(
     'ticket': jsonEncode({'name': problemName, 'note': note}),
     'processId': processId,
     'roomId': id,
-    'userId': userId
+    'userId': userId,
+    'username': user.name
   }).then((response) {});
 }
 
