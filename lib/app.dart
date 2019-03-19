@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ticketing/colors.dart';
+import 'package:ticketing/config.dart';
 import 'package:ticketing/pages/homePage.dart';
 import 'package:ticketing/pages/loginPage.dart';
 import 'package:ticketing/pages/profilePage.dart';
@@ -54,7 +55,7 @@ class SpinalTicketingApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'SpinalTicketig',
+      title: appName,
       theme: _kSpinalcomTheme,
       home: LoginPage(),
       onGenerateRoute: _getRoute,

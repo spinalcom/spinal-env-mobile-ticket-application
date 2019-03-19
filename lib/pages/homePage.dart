@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:qrcode_reader/qrcode_reader.dart';
+import 'package:ticketing/config.dart';
 import 'package:ticketing/pages/categoryChoose.dart';
 import 'package:ticketing/ticketManager.dart';
 import 'package:ticketing/widgets/TopBar.dart';
@@ -23,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: topBar(title: 'Tell My Feeling'),
+        appBar: topBar(title: appName),
         body: Center(
           child: Column(
             children: <Widget>[

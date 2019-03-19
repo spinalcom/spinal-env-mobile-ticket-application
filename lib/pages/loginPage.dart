@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ticketing/colors.dart';
+import 'package:ticketing/config.dart';
 import 'package:ticketing/pages/homePage.dart';
 import 'package:ticketing/userManager.dart';
 import 'package:ticketing/widgets/accentColorOverride.dart';
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              'Tell My Feeling',
+              appName,
               style: TextStyle(fontSize: 32),
             ),
           ),

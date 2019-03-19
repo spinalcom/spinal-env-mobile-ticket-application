@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ Future<List<Process>> fetchProcesses() async {
   for (var i = 0; i < tmpProcesses.length; i++) {
     categories.add(Process.fromJson(tmpProcesses[i]));
   }
-
+  await new Future.delayed(const Duration(seconds: 1));
   return categories;
 }
 
@@ -63,5 +64,7 @@ Future<Node> fetchNode(String nodeId) async {
   final response = await http.get(url);
   var tmpTickets = json.decode(response.body);
   print(tmpTickets);
+  await new Future.delayed(const Duration(seconds: 1));
+
   return Node.fromJson(tmpTickets);
 }

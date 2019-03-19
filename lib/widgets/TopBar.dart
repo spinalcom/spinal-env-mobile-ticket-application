@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:ticketing/config.dart';
 
 topBar({String title = '', String subTitle = '', Icon leading}) {
-  final String mtitle = title.isEmpty ? 'Tell My Feeling' : title;
+  final String mtitle = title.isEmpty ? appName : title;
   final String msubTitle = subTitle.isEmpty ? '' : subTitle;
 
   getTitle() {

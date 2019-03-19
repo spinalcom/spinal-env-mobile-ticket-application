@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ticketing/Models/User.dart';
 import 'package:ticketing/widgets/TopBar.dart';
 import 'package:ticketing/widgets/bottomNavBar.dart';
 
 class ProfilePage extends StatelessWidget {
-  Future<UserProfile> userProfile;
+  final Future<UserProfile> userProfile;
 
   ProfilePage(this.userProfile);
 

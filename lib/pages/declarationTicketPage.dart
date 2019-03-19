@@ -31,7 +31,7 @@ class TicketDeclarationState extends State<TicketDeclaration> {
   final problemController = TextEditingController();
 
   TicketDeclarationState(
-      this.roomName, this.problemName, this.processId, this.roomId) {}
+      this.roomName, this.problemName, this.processId, this.roomId);
 
   @override
   void dispose() {
@@ -139,7 +139,6 @@ class ConfirmationPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: topBar(),
       body: Stack(

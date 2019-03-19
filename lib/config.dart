@@ -1,3 +1,4 @@
+const String appName = "Smart Building App";
 const String kBaseUrl = "http://10.1.23.20";
 const String kTicketBaseUrl = "http://ticket-api.spinalcom.com";
 const String kUserBaseUrl = "http://user-api.spinalcom.com";
