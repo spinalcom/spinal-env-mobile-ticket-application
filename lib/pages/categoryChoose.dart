@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:ticketing/Models/Node.dart';
 import 'package:ticketing/Models/Process.dart';
@@ -53,8 +55,27 @@ class CategoryPage extends StatelessWidget {
               selectedIndex: 2,
             ),
           );
-        } else
-          return CircularProgressIndicator();
+        }
+        return Scaffold(
+          appBar: topBar(
+              title: 'Chargement...',
+              leading: Icon(
+                Icons.location_on,
+                size: 40,
+              )),
+          body: Container(
+            height: 50,
+            width: 50,
+            child: Center(
+              child: CircularProgressIndicator(),
+              heightFactor: 0.5,
+              widthFactor: 0.5,
+            ),
+          ),
+          bottomNavigationBar: BottomNavBar(
+            selectedIndex: 2,
+          ),
+        );
       },
     );
   }
@@ -64,6 +85,7 @@ class CategoryItemList extends StatelessWidget {
   final Future<List<Process>> processes;
   final String roomName;
   final String roomId;
+
   const CategoryItemList({Key key, this.processes, this.roomName, this.roomId})
       : super(key: key);
 
@@ -158,7 +180,16 @@ class CategoryItemList extends StatelessWidget {
           return Text('Aucun process de ticket créé');
         }
 
-        return CircularProgressIndicator();
+        return Container(
+            child: Column(
+          children: <Widget>[
+            Text('Chargement des type de problème...'),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+          ],
+        ));
       },
     );
   }
