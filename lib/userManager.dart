@@ -3,19 +3,43 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ticketing/IpManager.dart';
 import 'package:ticketing/Models/User.dart';
 import 'package:ticketing/config.dart';
 
-Future<UserProfile> login(String email, String password) {
-  var url = kLoginUrl;
-  return http.post(url, body: {"email": email, "password": password}).then(
-      (response) async {
+Future<UserProfile> login(String email, String password) async {
+  var url = await getUserIp();
+  return http.post('$url$kEndLogin',
+      body: {"email": email, "password": password}).then((response) async {
     var js = json.decode(response.body);
 
     if (js['id'] != null) {
       UserProfile user = UserProfile.fromJson(js);
       saveUserProfile(user);
       return user;
+    }
+    return null;
+  });
+}
+
+Future<UserProfile> signUp(
+    String name, String firstName, String email, String password) async {
+  final String baseUrl = await getUserIp();
+  final String url = '$baseUrl$kEndSignUp';
+  print(url);
+  return http.post(url, body: {
+    "name": name,
+    "fistname": firstName,
+    "email": email,
+    "password": password
+  }).then((response) {
+    var js = json.decode(response.body);
+    if (js['bad'] == null) {
+      saveUserProfile(UserProfile.fromJson(js)).then((res) {
+        if (res) {
+          return getUserProfile();
+        }
+      });
     }
     return null;
   });
@@ -42,35 +66,14 @@ Future<UserProfile> getUserProfile() async {
 
   String email = prefs.getString('email') ?? '';
   String password = prefs.getString('password') ?? '';
-  String firtname = prefs.getString('firtname') ?? '';
+  String firstName = prefs.getString('firtname') ?? '';
   String name = prefs.getString('name') ?? '';
   String id = prefs.getString('id') ?? '';
 
   return UserProfile(
       email: email,
       password: password,
-      firstName: firtname,
+      firstName: firstName,
       name: name,
       id: id);
-}
-
-Future<UserProfile> signUp(
-    String name, String firstname, String email, String password) {
-  final String url = kSignUpUrl;
-  return http.post(url, body: {
-    "name": name,
-    "fistname": firstname,
-    "email": email,
-    "password": password
-  }).then((response) {
-    var js = json.decode(response.body);
-    if (js['bad'] == null) {
-      saveUserProfile(UserProfile.fromJson(js)).then((res) {
-        if (res) {
-          return getUserProfile();
-        }
-      });
-    }
-    return null;
-  });
 }

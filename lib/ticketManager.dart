@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:ticketing/IpManager.dart';
 import 'package:ticketing/Models/DefaultSentence.dart';
 import 'package:ticketing/Models/Node.dart';
 import 'package:ticketing/Models/Process.dart';
@@ -11,7 +12,10 @@ import 'package:ticketing/userManager.dart';
 
 Future<List<Process>> fetchProcesses() async {
   List<Process> categories = [];
-  final response = await http.get(kProcesses);
+  final String baseUrl = await getTicketIp();
+  final String url = '$baseUrl$kEndProcesses';
+  print('fetch Process url :' + url);
+  final response = await http.get(url);
   var tmpProcesses = json.decode(response.body);
   for (var i = 0; i < tmpProcesses.length; i++) {
     categories.add(Process.fromJson(tmpProcesses[i]));
@@ -22,9 +26,12 @@ Future<List<Process>> fetchProcesses() async {
 
 sendTicket(
     {String problemName, String note, String processId, String id}) async {
-  var url = kTicket;
+  final String baseUrl = await getTicketIp();
   UserProfile user = await getUserProfile();
+  final String url = '$baseUrl$kEndTicket';
   final String userId = user.id;
+  print('send ticket url :' + url);
+
   http.post(url, body: {
     'ticket': jsonEncode({'name': problemName, 'note': note}),
     'processId': processId,
@@ -36,7 +43,9 @@ sendTicket(
 
 Future<List<Categories>> fetchCategories(String processId) async {
   List<Categories> sentences = [];
-  final String url = kSentences + "/$processId";
+  final String baseUrl = await getTicketIp();
+  final String url = '$baseUrl$kEndSentences/$processId';
+  print('fetch categorie url: ' + url);
   final response = await http.get(url);
   var tmpSentences = json.decode(response.body);
   for (var i = 0; i < tmpSentences.length; i++) {
@@ -48,10 +57,14 @@ Future<List<Categories>> fetchCategories(String processId) async {
 }
 
 Future<List<String>> fetchTicketHistory() async {
-  UserProfile user = await getUserProfile();
+  final UserProfile user = await getUserProfile();
   final String userId = user.id;
+  final String baseUrl = await getTicketIp();
+  final String url = '$baseUrl$kEndTicketUser/$userId';
+
+  print('fetchTicket History url :' + url);
   List<String> tickets = [];
-  final String url = kTicketUser + '/$userId';
+
   final response = await http.get(url);
   var tmpTickets = json.decode(response.body);
   for (var i = 0; i < tmpTickets.length; i++) {
@@ -61,11 +74,14 @@ Future<List<String>> fetchTicketHistory() async {
 }
 
 Future<Node> fetchNode(String nodeId) async {
-  final String url = kTicketNode + "/$nodeId";
+  final String baseUrl = await getTicketIp();
+  final String url = "$baseUrl$kEndTicketNode/$nodeId";
+
+  print('fetch node url :' + url);
+
   final response = await http.get(url);
   var tmpTickets = json.decode(response.body);
-  print(tmpTickets);
-  await new Future.delayed(const Duration(seconds: 1));
 
+  await new Future.delayed(const Duration(seconds: 1));
   return Node.fromJson(tmpTickets);
 }

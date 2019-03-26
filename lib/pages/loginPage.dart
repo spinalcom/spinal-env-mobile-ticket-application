@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ticketing/colors.dart';
 import 'package:ticketing/config.dart';
+import 'package:ticketing/pages/configPage.dart';
 import 'package:ticketing/pages/homePage.dart';
 import 'package:ticketing/userManager.dart';
 import 'package:ticketing/widgets/accentColorOverride.dart';
@@ -136,6 +137,18 @@ class _LoginPageState extends State<LoginPage> {
                   textColor: kSpinalcomAccent,
                 ),
               ]),
+          Container(
+            alignment: Alignment.bottomLeft,
+            child: IconButton(
+              icon: Icon(Icons.settings),
+              tooltip: 'open configuration panel',
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) {
+                  return ConfigPage();
+                }));
+              },
+            ),
+          ),
         ],
       ),
     );
